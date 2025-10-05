@@ -14,10 +14,13 @@ class Pohon extends Model
     protected $fillable = [
         'nama_pohon',
         'jenis_pohon',
-        'umur_pohon',
+        'tanggal_tanam',
         'tinggi_pohon',
+        'satuan_tinggi',
         'lokasi_pohon',
-        'id_pemilik'
+        'latitude',
+        'longitude',
+        'id_pemilik',
     ];
 
     public function pemilik()

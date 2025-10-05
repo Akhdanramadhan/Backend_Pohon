@@ -7,38 +7,77 @@ use Illuminate\Http\Request;
 
 class PemilikPohonController extends Controller
 {
+    /**
+     * Tampilkan daftar pemilik pohon
+     */
     public function index()
     {
-        return PemilikPohon::with('pohon')->get();
+        $pemilik = PemilikPohon::all();
+        return view('pemilik.index', compact('pemilik'));
     }
 
+    /**
+     * Tampilkan form tambah pemilik pohon
+     */
+    public function create()
+    {
+        return view('pemilik.create');
+    }
+
+    /**
+     * Simpan data pemilik pohon baru
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'nama_pemilik' => 'required|string',
+            'nama_pemilik' => 'required|string|max:255',
             'umur_pemilik' => 'required|integer',
-            'jenis_kelamin' => 'required|in:L,P'
+            'jenis_kelamin' => 'required|in:L,P',
         ]);
 
-        $pemilik = PemilikPohon::create($request->all());
-        return response()->json($pemilik, 201);
+        PemilikPohon::create($request->all());
+
+        return redirect()->route('pemilik.index')->with('success', 'Data pemilik berhasil ditambahkan');
     }
 
-    public function show($id)
+    /**
+     * Tampilkan form edit pemilik pohon
+     */
+    public function edit(PemilikPohon $pemilik)
     {
-        return PemilikPohon::with('pohon')->findOrFail($id);
+        return view('pemilik.edit', compact('pemilik'));
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update data pemilik pohon
+     */
+    public function update(Request $request, PemilikPohon $pemilik)
     {
-        $pemilik = PemilikPohon::findOrFail($id);
+        $request->validate([
+            'nama_pemilik' => 'required|string|max:255',
+            'umur_pemilik' => 'required|integer',
+            'jenis_kelamin' => 'required|in:L,P',
+        ]);
+
         $pemilik->update($request->all());
-        return response()->json($pemilik, 200);
+
+        return redirect()->route('pemilik.index')->with('success', 'Data pemilik berhasil diperbarui');
     }
 
-    public function destroy($id)
+    /**
+     * Hapus pemilik pohon
+     */
+    public function destroy(PemilikPohon $pemilik)
     {
-        PemilikPohon::destroy($id);
-        return response()->json(null, 204);
+        $pemilik->delete();
+        return redirect()->route('pemilik.index')->with('success', 'Data pemilik berhasil dihapus');
+    }
+
+    /**
+     * Tampilkan detail pemilik pohon
+     */
+    public function show(PemilikPohon $pemilik)
+    {
+        return view('pemilik.show', compact('pemilik'));
     }
 }

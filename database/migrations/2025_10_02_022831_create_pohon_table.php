@@ -11,18 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-    Schema::create('pohon', function (Blueprint $table) {
-        $table->id();
-        $table->string('nama_pohon');
-        $table->string('jenis_pohon');
-        $table->date('tanggal_tanam')->nullable();
-        $table->decimal('tinggi_pohon', 8, 2)->nullable();
-        $table->string('lokasi_pohon')->nullable();
-        $table->decimal('latitude', 10, 7)->nullable();
-        $table->decimal('longitude', 10, 7)->nullable();
-        $table->foreignId('id_pemilik')->constrained('pemilik_pohon')->onDelete('cascade');
-        $table->timestamps();
-    });
+Schema::create('pohon', function (Blueprint $table) {
+    $table->id();
+    $table->string('nama_pohon');
+    $table->string('jenis_pohon');
+    $table->date('tanggal_tanam')->nullable();
+    $table->decimal('tinggi_pohon', 8, 2)->nullable();
+    $table->string('lokasi_pohon')->nullable();
+    $table->decimal('latitude', 10, 7)->nullable();
+    $table->decimal('longitude', 10, 7)->nullable();
+    $table->foreignId('id_pemilik')->constrained('pemilik_pohon')->onDelete('cascade');
+    $table->timestamps();
+});
 
 
     }

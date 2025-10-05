@@ -7,23 +7,30 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Tambahkan kolom alamat ke tabel pemilik_pohon
+     * Run the migrations.
      */
     public function up(): void
     {
-        Schema::table('pemilik_pohon', function (Blueprint $table) {
-            $table->string('alamat')->nullable()->after('jenis_kelamin'); 
-            // pakai ->after biar posisinya setelah jenis_kelamin
+        Schema::create('pohon', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama_pohon');
+            $table->string('jenis_pohon');
+            $table->date('tanggal_tanam')->nullable();
+            $table->decimal('tinggi_pohon', 8, 2)->nullable();
+            $table->string('satuan_tinggi')->default('m'); // ← kolom tambahan
+            $table->string('lokasi_pohon')->nullable();
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
+            $table->foreignId('id_pemilik')->constrained('pemilik_pohon')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
     /**
-     * Hapus kolom alamat kalau rollback
+     * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('pemilik_pohon', function (Blueprint $table) {
-            $table->dropColumn('alamat');
-        });
+        Schema::dropIfExists('pohon');
     }
 };
